@@ -9,18 +9,16 @@ showTime()
 
 # Exercise 3
 
-def display_time():
-     alarme = input("Select the alarm time in format XX:XX : ").strip()
-     print( f"Your alarm time {alarme} is confirmed.")
-     while True:
-         current_time = time.strftime("%H:%M:%S")
-         if current_time == alarme:
-             print("\n It's time to wake up")
-             break
-         time.sleep(1)
-display_time () 
-
-
+# def display_time():
+#      alarme = input("Select the alarm time in format XX:XX : ").strip()
+#      print( f"Your alarm time {alarme} is confirmed.")
+#      while True:
+#          current_time = time.strftime("%H:%M:%S")
+#          if current_time == alarme:
+#              print("\n It's time to wake up")
+#              break
+#          time.sleep(1)
+# display_time () 
 
 # Exercise 2
 # import time

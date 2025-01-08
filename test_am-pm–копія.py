@@ -1,4 +1,6 @@
-import time  
+import time
+from datetime import datetime  
+
 
 def display_clock():
     # Select the time
@@ -14,10 +16,12 @@ def display_clock():
     # Основний цикл роботи годинника
     try:
         while True:
+            now = datetime.now()
+
             if time_format == "12":
-                current_time = time.strftime("%I:%M:%S %p")  # am/pm format
+                current_time = now.strftime("%I:%M:%S %p")  # am/pm format
             else:
-                current_time = time.strftime("%H:%M:%S")  # 24-format
+                current_time = now.strftime("%H:%M:%S")  # 24-format
             
             print(f"\rCurrent time is: {current_time}", end="")  # To show the time
             time.sleep(1)  # Updating every sec
