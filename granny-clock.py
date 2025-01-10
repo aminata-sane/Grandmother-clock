@@ -2,39 +2,39 @@ import time
 from customtkinter import *
 from threading import Thread
 
-# Fonction pour vérifier l'heure de l'alarme
+# function to verify the hour of alarm
 def check_alarm():
     while True:
         current_time = time.strftime("%H:%M:%S")
-        selected_time = f"{hour_var.get():02}:{minute_var.get():02}:{second_var.get():02}"
-        print(f"Heure actuelle : {current_time} | Heure d'alarme : {selected_time}")  # Affichage dans le terminal
+        selected_time = f"{hour_var.get()}:{minute_var.get()}:{second_var.get()}"
+        print(f"actual hour : {current_time} | alarm hour : {selected_time}")  # terminal print
         
         if current_time == selected_time:
-            alarm_status.set("🔔 Alarme déclenchée !")
-            print("🔔 Alarme déclenchée !")  # Affichage dans le terminal
+            alarm_status.set("🔔 time to wake up !")
+            print("🔔 time to wake up !")  # terminal print
             break
         time.sleep(1)
 
-# Fonction pour démarrer l'alarme
+# function to activate the alarm
 def start_alarm():
-    alarm_status.set("⏳ Alarme activée...")
-    print("⏳ Alarme activée...")  # Affichage dans le terminal
+    alarm_status.set("⏳ Alarm activate...")
+    print("⏳ Alarm activate...")  # terminal print
     Thread(target=check_alarm, daemon=True).start()
 
-# Initialisation de l'application
+# Initialisation of app
 app = CTk()
 app.geometry("400x300")
-app.title("Alarme")
+app.title("Alarm")
 
-# Cadre principal
+# main 
 frame = CTkFrame(master=app, fg_color="white")
 frame.pack(expand=True, fill="both", padx=20, pady=20)
 
-# Titre
-label = CTkLabel(master=frame, text="Réveil/Alarme", font=("Arial", 20))
+# Title
+label = CTkLabel(master=frame, text="wake up/Alarm", font=("Arial", 20))
 label.pack(pady=10)
 
-# Sélection des heures, minutes et secondes
+# Selection of hour, minute, second
 hour_var = IntVar(value=0)
 minute_var = IntVar(value=0)
 second_var = IntVar(value=0)
@@ -42,6 +42,7 @@ second_var = IntVar(value=0)
 time_frame = CTkFrame(master=frame, fg_color="lightgray")
 time_frame.pack(pady=10)
 
+# Scroll the selection hour 
 hour_scroll = CTkComboBox(
     master=time_frame,
     values=[f"{i:02}" for i in range(24)],
@@ -52,6 +53,7 @@ hour_scroll = CTkComboBox(
 )
 hour_scroll.grid(row=0, column=0, padx=5)
 
+# Scroll the selection minute
 minute_scroll = CTkComboBox(
     master=time_frame,
     values=[f"{i:02}" for i in range(60)],
@@ -62,6 +64,7 @@ minute_scroll = CTkComboBox(
 )
 minute_scroll.grid(row=0, column=1, padx=5)
 
+# Scroll the selection second
 second_scroll = CTkComboBox(
     master=time_frame,
     values=[f"{i:02}" for i in range(60)],
@@ -72,15 +75,15 @@ second_scroll = CTkComboBox(
 )
 second_scroll.grid(row=0, column=2, padx=5)
 
-# Bouton pour démarrer l'alarme
-btn = CTkButton(master=frame, text="Démarrer l'alarme", command=start_alarm)
+# Button to activate alarm
+btn = CTkButton(master=frame, text="activate alarm", command=start_alarm)
 btn.pack(pady=10)
 
-# État de l'alarme
+# state of alarm
 alarm_status = StringVar()
-alarm_status.set("⏳ En attente...")
+alarm_status.set("⏳ wait please...")
 status_label = CTkLabel(master=frame, textvariable=alarm_status, font=("Arial", 16), text_color="red")
 status_label.pack(pady=20)
 
-# Exécution de l'application
+# execution of app
 app.mainloop()
