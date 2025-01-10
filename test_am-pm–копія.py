@@ -13,7 +13,7 @@ def display_clock():
     
     print(f"You selected {time_format}.")
     
-    # Основний цикл роботи годинника
+    # Cycle d'horloge de base
     try:
         while True:
             now = datetime.now()

@@ -1,16 +1,8 @@
 import time
 from datetime import datetime  
 
-# --------------------Fonction pour afficher l'heure à temps réelle---------------------
-def display_clock():
-    while True:
-        current_time = time.strftime("%H:%M:%S")
-        print(current_time, end="\r")
-        time.sleep(1)
-# if __name__ == "__main__":
-    
+# Select 12/24 format time
 
-# --------------------Select 12/24 format time--------------------------------
 def display_format():
     # Select the time
     valid_formats = ("12", "24") 
@@ -22,7 +14,7 @@ def display_format():
     
     print(f"You selected {time_format}.")
     
-    # Cycle d'horloge de base
+    # Основний цикл роботи годинника
     try:
         while True:
             now = datetime.now()
@@ -38,7 +30,7 @@ def display_format():
         print("\nThe clock is stopped")
 
 
-#-------------------------------- Stop clock------------------------------
+# Stop clock
 def horloge_avec_pause():
     is_paused = False  # Before calling the function 
     user_input = None
@@ -83,7 +75,7 @@ def horloge_avec_pause():
 
     
 
-# ----------------------------Menu-----------------------------
+# Menu
 while True:
     print("\nMenu:")
     print("See the curent time - press 1: ")
@@ -95,7 +87,7 @@ while True:
     choise = input ("Make your choise: ")
 
     if choise == "1":
-        display_clock()
+        print("showTime()")
 
     elif choise == "2":
         print("display_time()")
