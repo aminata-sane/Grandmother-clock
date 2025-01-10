@@ -30,6 +30,50 @@ def display_clock():
         print("\nThe clock is stopped")
 
 
+# Stop clock
+def horloge_avec_pause():
+    is_paused = False  # Before calling the function 
+    user_input = None
+    
+    try:
+        while True:
+            if not is_paused:
+                user_input = input("\nPress '+' to pause the clock or '-' to resume: ").strip()
+            # Current time
+                now = datetime.now()
+                current_time = now.strftime("%H:%M:%S")
+                print(f"\rCurrent time : {current_time}", end="\r") 
+                time.sleep(1) 
+            else:
+                print("\r The clock is paused. ", end="" )
+
+        # Input verification
+
+            if user_input == "+":
+                print("\nThe clock is paused.")
+                is_paused = True  # Stop the clock
+                break
+            if user_input == "-":
+                is_paused = False  # Restore the clock
+                user_input = None
+            
+            # Loop to update time after pressing "-"
+                while not is_paused:  # Цикл для нарахування секунд
+                    now = datetime.now()  
+                    current_time = now.strftime("%H:%M:%S")
+                    print(f"\rCurrent time : {current_time}", end="")
+                    time.sleep(1)  
+                           
+        
+            else:
+                print("\nInvalid entry. Try again.")
+    except KeyboardInterrupt:
+        user_input = input("\nPress '+' to pause the clock or '-' to resume: ").strip()
+        
+
+
+
+    
 
 # Menu
 while True:
@@ -52,8 +96,11 @@ while True:
     elif choise == "4":
         display_clock()
     elif choise == "5":
-        print("stop_clock()")
+        horloge_avec_pause()
     else:
         print("Invalid choice. Please try again.")
 
 display_clock()
+
+# Function call to stop the clock
+horloge_avec_pause()
