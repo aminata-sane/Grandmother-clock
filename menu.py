@@ -3,7 +3,7 @@ from datetime import datetime
 
 # Select 12/24 format time
 
-def display_clock():
+def display_format():
     # Select the time
     valid_formats = ("12", "24") 
     time_format = input("Select the time format (12 or 24): ").strip()
@@ -94,13 +94,13 @@ while True:
     elif choise == "3":
         print("alarm()")
     elif choise == "4":
-        display_clock()
+        display_format()
     elif choise == "5":
         horloge_avec_pause()
     else:
         print("Invalid choice. Please try again.")
 
-display_clock()
+display_format()
 
 # Function call to stop the clock
 horloge_avec_pause()
