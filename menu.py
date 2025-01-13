@@ -10,39 +10,35 @@ def display_clock():
             time.sleep(1)
     except KeyboardInterrupt:
         print("Another option")
-# if __name__ == "__main__":
-    
-# -------------------2. Fonction pour afficher l'heure en temps réel--------------------------
+# Function to display user-set time
 def display_time(hours, minutes, seconds):
     print("The clock starts with the set time...")
     now = datetime.now().replace(hour=hours, minute=minutes, second=seconds, microsecond=0)
+    try:
+        while True:
+            #Afficher l'heure actuelle
+            current_time = now.strftime("%H:%M:%S")
+            print(current_time, end="\r")
+            now += timedelta(seconds=1)
+            time.sleep(1)
+    except KeyboardInterrupt:     
+        print("\nClock stopped by user.")
 
-    while True:
-         # Afficher l'heure actuelle
-        current_time = now.strftime("%H:%M:%S")
-        print(current_time, end="\r")
-        now += timedelta(seconds=1)
-        time.sleep(1)
-# Fonction pour demander une heure à l'utilisateur
+# -------------------2. Fonction pour afficher l'heure en temps réel--------------------------
 def ask_time():
     while True: 
         try:
             hours = int(input("Enter the hour (0-23): "))
             minutes = int(input("Enter the minutes (0-59): "))
             seconds = int(input("Enter the seconds (0-59): "))
-            # Vérifier que les valeurs sont valides
+            #Vérifier que les valeurs sont valides
             if 0 <= hours <= 23 and 0 <= minutes <= 59 and 0 <= seconds <= 59:
                 print(f"Time set: {hours:02}:{minutes:02}:{seconds:02}")  
                 return hours, minutes, seconds
             else:
                 print("Error: Please enter valid values for hours (0-23), minutes (0-59), and seconds (0-59).")  
         except ValueError:
-            print("Error: Please enter a valid integer.")       
- # Demander une heure à l'utilisateur
-hours, minutes, seconds = ask_time()
-# Afficher l'horloge en temps réel avec l'heure réglée
-# Programme principal
-# if __name__ == "__main__":
+            print("Error: Please enter a valid integer.")
 
 # -------------------3. Alarme---------------------------
 def show_time_and_alarm():
@@ -142,17 +138,19 @@ def horloge_avec_pause():
 # ----------------------------Menu-----------------------------
 while True:
     print("\nMenu:")
-    print("See the curent time - press 1: ")
-    print("Offer your own time - press 2: ")
-    print("Select the alarm time - press 3: ")
-    print("Select 12/24 format time - press 4: ")
-    print("Stop the clock - press 5: ")
+    print("1. See the current time")
+    print("2. Offer your own time")
+    print("3. Select the alarm time")
+    print("4. Select 12/24 format time")
+    print("5. Stop the clock")
+    print("6. Exit")
 
     choise = input ("Make your choise: ")
 
     if choise == "1":
         display_clock()
     elif choise == "2":
+        hours, minutes, seconds = ask_time()
         display_time(hours, minutes, seconds)
     elif choise == "3":
         show_time_and_alarm()
@@ -160,6 +158,9 @@ while True:
         display_format()
     elif choise == "5":
         horloge_avec_pause()
+    elif choise == "6":
+        print("Exiting program. Goodbye!")
+        break
     else:
         print("Invalid choice. Please try again.")
 
