@@ -45,6 +45,25 @@ hours, minutes, seconds = ask_time()
 # if __name__ == "__main__":
 
 # -------------------3. Alarme---------------------------
+def show_time_and_alarm():
+    alarme = None
+    try:
+        while True:
+            now = datetime.now()
+            current_time = now.strftime("%H:%M:%S")
+            print( current_time,  end="\r")
+# Adding alarm time
+            if alarme is None:
+                alarme = input ("\n Select the alarm time in format XX:XX:XX : ").strip()
+                print(f"Your alarm time {alarme} is confirmed.")
+            
+            else:
+                if current_time == alarme:
+                    print("\n It's time to wake up")
+                    break
+            time.sleep(1)
+    except ValueError:
+        print("Error: Please enter a valid integer.")
 
 
 # --------------------4. Select 12/24 format time--------------------------------
@@ -75,7 +94,7 @@ def display_format():
         print("\nThe clock is stopped")
 
 
-#-------------------------------- Stop clock------------------------------
+#-------------------------------- 5. Stop clock------------------------------
 def horloge_avec_pause():
     is_paused = False  # Before calling the function 
     user_input = None
@@ -136,7 +155,7 @@ while True:
     elif choise == "2":
         display_time(hours, minutes, seconds)
     elif choise == "3":
-        print("alarm()")
+        show_time_and_alarm()
     elif choise == "4":
         display_format()
     elif choise == "5":
@@ -148,3 +167,4 @@ display_format()
 
 # Function call to stop the clock
 horloge_avec_pause()
+show_time_and_alarm()
