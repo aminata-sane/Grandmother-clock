@@ -1,89 +1,149 @@
 import time
-from customtkinter import *
+from datetime import datetime, timedelta
 from threading import Thread
 
-# function to verify the hour of alarm
-def check_alarm():
-    while True:
-        current_time = time.strftime("%H:%M:%S")
-        selected_time = f"{hour_var.get()}:{minute_var.get()}:{second_var.get()}"
-        print(f"actual hour : {current_time} | alarm hour : {selected_time}")  # terminal print
-        
-        if current_time == selected_time:
-            alarm_status.set("🔔 time to wake up !")
-            print("🔔 time to wake up !")  # terminal print
-            break
-        time.sleep(1)
+# ------------1. Fonction pour demander l'heure à temps réel------------
+def display_clock():
+    try:
+        while True:
+            current_time = time.strftime("%H:%M:%S")
+            print(f"Current Time: {current_time}", end="\r")
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\nAnother option.")
 
-# function to activate the alarm
-def start_alarm():
-    alarm_status.set("⏳ Alarm activate...")
-    print("⏳ Alarm activate...")  # terminal print
-    Thread(target=check_alarm, daemon=True).start()
+# Fonction pour afficher l'heure définie par l'utilisateur
+def display_time(hours, minutes, seconds):
+    print("The clock starts with the set time...")
+    now = datetime.now().replace(hour=hours, minute=minutes, second=seconds, microsecond=0)
+    try:
+        while True:
+            current_time = now.strftime("%H:%M:%S")
+            print(f"Time: {current_time}", end="\r")
+            now += timedelta(seconds=1)
+            time.sleep(1)
+    except KeyboardInterrupt:     
+        print("\nClock stopped by user.")
 
-# Initialisation of app
-app = CTk()
-app.geometry("400x300")
-app.title("Alarm")
+# ------------2. Fonction pour demander l'heure à l'utilisateur------------
+def ask_time():
+    while True: 
+        try:
+            hours = int(input("Enter the hour (0-23): "))
+            minutes = int(input("Enter the minutes (0-59): "))
+            seconds = int(input("Enter the seconds (0-59): "))
+            # Vérifier que les valeurs sont valides
+            if 0 <= hours <= 23 and 0 <= minutes <= 59 and 0 <= seconds <= 59:
+                print(f"Time set: {hours:02}:{minutes:02}:{seconds:02}")  
+                return hours, minutes, seconds
+            else:
+                print("Error: Please enter valid values for hours (0-23), minutes (0-59), and seconds (0-59).")  
+        except ValueError:
+            print("Error: Please enter a valid integer.")
 
-# main 
-frame = CTkFrame(master=app, fg_color="white")
-frame.pack(expand=True, fill="both", padx=20, pady=20)
+# ------------3. Fonction d'alarme avec horloge en temps réel------------
+def set_alarm():
+    print("Set the alarm time:")
+    alarm_hour, alarm_minute, alarm_second = ask_time()
+    alarm_time = f"{alarm_hour:02}:{alarm_minute:02}:{alarm_second:02}"
+    print(f"Alarm set for {alarm_time}.")
 
-# Title
-label = CTkLabel(master=frame, text="wake up/Alarm", font=("Arial", 20))
-label.pack(pady=10)
+    def alarm_checker():
+        while True:
+            current_time = time.strftime("%H:%M:%S")
+            print(f"Checking alarm... Current Time: {current_time}", end="\r")
+            if current_time == alarm_time:
+                print("\n🔔 Alarme déclenchée ! 🔔")
+                break
+            time.sleep(1)
 
-# Selection of hour, minute, second
-hour_var = IntVar(value=0)
-minute_var = IntVar(value=0)
-second_var = IntVar(value=0)
+    # Lancer l'alarme dans un thread séparé
+    Thread(target=alarm_checker, daemon=True).start()
 
-time_frame = CTkFrame(master=frame, fg_color="lightgray")
-time_frame.pack(pady=10)
+    # Afficher l'heure en temps réel pendant que l'alarme est active
+    try:
+        while True:
+            current_time = time.strftime("%H:%M:%S")
+            print(f"Current Time: {current_time}", end="\r")
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\nAlarm stopped.")
 
-# Scroll the selection hour 
-hour_scroll = CTkComboBox(
-    master=time_frame,
-    values=[f"{i:02}" for i in range(24)],
-    variable=hour_var,
-    width=80,
-    font=("Arial", 16),
-    justify="center",
-)
-hour_scroll.grid(row=0, column=0, padx=5)
+# ------------4. Fonction pour afficher le format 12/24------------
+def display_format():
+    valid_formats = ("12", "24") 
+    time_format = input("Select the time format (12 or 24): ").strip()
+    
+    while time_format not in valid_formats:
+        print("You didn't select the format. Try again")
+        time_format = input("Select the time format (12 or 24): ").strip()
+    
+    print(f"You selected {time_format}.")
 
-# Scroll the selection minute
-minute_scroll = CTkComboBox(
-    master=time_frame,
-    values=[f"{i:02}" for i in range(60)],
-    variable=minute_var,
-    width=80,
-    font=("Arial", 16),
-    justify="center",
-)
-minute_scroll.grid(row=0, column=1, padx=5)
+    try:
+        while True:
+            now = datetime.now()
+            if time_format == "12":
+                current_time = now.strftime("%I:%M:%S %p")  # am/pm format
+            else:
+                current_time = now.strftime("%H:%M:%S")  # 24-format
+            
+            print(f"\rCurrent time is: {current_time}", end="") # To show the time
+            time.sleep(1) # Updating every sec
+    except KeyboardInterrupt:
+        print("\n The clock is stopped.")
 
-# Scroll the selection second
-second_scroll = CTkComboBox(
-    master=time_frame,
-    values=[f"{i:02}" for i in range(60)],
-    variable=second_var,
-    width=80,
-    font=("Arial", 16),
-    justify="center",
-)
-second_scroll.grid(row=0, column=2, padx=5)
+# ------------------------- Pause clock function------------------------------
+def horloge_avec_pause():
+    is_paused = False   # Before calling the function
+    user_input = None
 
-# Button to activate alarm
-btn = CTkButton(master=frame, text="activate alarm", command=start_alarm)
-btn.pack(pady=10)
+    try:
+        while True:
+            if not is_paused:
+                now = datetime.now()
+                current_time = now.strftime("%H:%M:%S")
+                print(f"\rCurrent time: {current_time}", end="")
+                time.sleep(1)
 
-# state of alarm
-alarm_status = StringVar()
-alarm_status.set("⏳ wait please...")
-status_label = CTkLabel(master=frame, textvariable=alarm_status, font=("Arial", 16), text_color="red")
-status_label.pack(pady=20)
+            user_input = input("\nPress '+' to pause or '-' to resume: ").strip()
+            if user_input == "+":
+                is_paused = True
+                print("\nClock paused.")
+                break
+            elif user_input == "-":
+                is_paused = False
+                print("\nClock resumed.")
+            else:
+                print("\nInvalid input. Please press '+' or '-'.")
+    except KeyboardInterrupt:
+        print("\nClock stopped.")
 
-# execution of app
-app.mainloop()
+# Main Menu
+while True:
+    print("\nMenu:")
+    print("1. See the current time")
+    print("2. Offer your own time")
+    print("3. Set an alarm")
+    print("4. Select 12/24 format time")
+    print("5. Stop the clock")
+    print("6. Exit")
+
+    choice = input("Make your choice: ")
+
+    if choice == "1":
+        display_clock()
+    elif choice == "2":
+        hours, minutes, seconds = ask_time()
+        display_time(hours, minutes, seconds)
+    elif choice == "3":
+        set_alarm()
+    elif choice == "4":
+        display_format()
+    elif choice == "5":
+        horloge_avec_pause()
+    elif choice == "6":
+        print("Exiting program. Goodbye!")
+        break
+    else:
+        print("Invalid choice. Please try again.")
