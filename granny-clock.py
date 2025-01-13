@@ -2,7 +2,7 @@ import time
 from datetime import datetime, timedelta
 from threading import Thread
 
-# ------------1. Fonction pour demander l'heure à temps réel------------
+# ------------1. Function to display real-time clock------------
 def display_clock():
     try:
         while True:
@@ -12,7 +12,7 @@ def display_clock():
     except KeyboardInterrupt:
         print("\nAnother option.")
 
-# Fonction pour afficher l'heure définie par l'utilisateur
+# Function to display the user-defined time
 def display_time(hours, minutes, seconds):
     print("The clock starts with the set time...")
     now = datetime.now().replace(hour=hours, minute=minutes, second=seconds, microsecond=0)
@@ -25,14 +25,14 @@ def display_time(hours, minutes, seconds):
     except KeyboardInterrupt:     
         print("\nClock stopped by user.")
 
-# ------------2. Fonction pour demander l'heure à l'utilisateur------------
+# ------------2. Function to ask the user for the time------------
 def ask_time():
     while True: 
         try:
             hours = int(input("Enter the hour (0-23): "))
             minutes = int(input("Enter the minutes (0-59): "))
             seconds = int(input("Enter the seconds (0-59): "))
-            # Vérifier que les valeurs sont valides
+            # Check that the values are valid
             if 0 <= hours <= 23 and 0 <= minutes <= 59 and 0 <= seconds <= 59:
                 print(f"Time set: {hours:02}:{minutes:02}:{seconds:02}")  
                 return hours, minutes, seconds
@@ -41,7 +41,7 @@ def ask_time():
         except ValueError:
             print("Error: Please enter a valid integer.")
 
-# ------------3. Fonction d'alarme avec horloge en temps réel------------
+# ------------3. Alarm function with real-time clock------------
 def set_alarm():
     print("Set the alarm time:")
     alarm_hour, alarm_minute, alarm_second = ask_time()
@@ -53,14 +53,14 @@ def set_alarm():
             current_time = time.strftime("%H:%M:%S")
             print(f"Checking alarm... Current Time: {current_time}", end="\r")
             if current_time == alarm_time:
-                print("\n🔔 Alarme déclenchée ! 🔔")
+                print("\n🔔 Alarm triggered! 🔔")
                 break
             time.sleep(1)
 
-    # Lancer l'alarme dans un thread séparé
+    # Launch the alarm in a separate thread
     Thread(target=alarm_checker, daemon=True).start()
 
-    # Afficher l'heure en temps réel pendant que l'alarme est active
+    # Display the real-time clock while the alarm is active
     try:
         while True:
             current_time = time.strftime("%H:%M:%S")
@@ -69,7 +69,7 @@ def set_alarm():
     except KeyboardInterrupt:
         print("\nAlarm stopped.")
 
-# ------------4. Fonction pour afficher le format 12/24------------
+# ------------4. Function to select 12/24 hour format------------
 def display_format():
     valid_formats = ("12", "24") 
     time_format = input("Select the time format (12 or 24): ").strip()
@@ -91,7 +91,7 @@ def display_format():
             print(f"\rCurrent time is: {current_time}", end="") # To show the time
             time.sleep(1) # Updating every sec
     except KeyboardInterrupt:
-        print("\n The clock is stopped.")
+        print("\nThe clock is stopped.")
 
 # ------------------------- Pause clock function------------------------------
 def horloge_avec_pause():
