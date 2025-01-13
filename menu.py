@@ -1,7 +1,7 @@
 import time
 from datetime import datetime, timedelta  
 
-# --------------------1. Fonction pour afficher l'heure à temps réelle---------------------
+# --------------------1. Function to display real time ---------------------
 def display_clock():
     try:
         while True:
@@ -16,7 +16,7 @@ def display_time(hours, minutes, seconds):
     now = datetime.now().replace(hour=hours, minute=minutes, second=seconds, microsecond=0)
     try:
         while True:
-            #Afficher l'heure actuelle
+            #display real time
             current_time = now.strftime("%H:%M:%S")
             print(current_time, end="\r")
             now += timedelta(seconds=1)
@@ -24,14 +24,14 @@ def display_time(hours, minutes, seconds):
     except KeyboardInterrupt:     
         print("\nClock stopped by user.")
 
-# -------------------2. Fonction pour afficher l'heure en temps réel--------------------------
+# -------------------2. display the user-selected time--------------------------
 def ask_time():
     while True: 
         try:
             hours = int(input("Enter the hour (0-23): "))
             minutes = int(input("Enter the minutes (0-59): "))
             seconds = int(input("Enter the seconds (0-59): "))
-            #Vérifier que les valeurs sont valides
+            #Check that the values ​​are valid
             if 0 <= hours <= 23 and 0 <= minutes <= 59 and 0 <= seconds <= 59:
                 print(f"Time set: {hours:02}:{minutes:02}:{seconds:02}")  
                 return hours, minutes, seconds
@@ -74,7 +74,7 @@ def display_format():
     
     print(f"You selected {time_format}.")
     
-    # Cycle d'horloge de base
+    #  Basic clock cycle
     try:
         while True:
             now = datetime.now()
@@ -118,7 +118,7 @@ def horloge_avec_pause():
                 user_input = None
             
             # Loop to update time after pressing "-"
-                while not is_paused:  # Цикл для нарахування секунд
+                while not is_paused:  # Cycle for counting seconds
                     now = datetime.now()  
                     current_time = now.strftime("%H:%M:%S")
                     print(f"\rCurrent time : {current_time}", end="")
